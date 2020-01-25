@@ -10,43 +10,43 @@ public class ThrowableObjects : InteractableObjects
     // speed parameter of moving changed by player stats V
     // needs to have a direction of throw V
 
-    float ThrowForce = 600f; 
-    Vector3 objectPos;
-    float Distance; 
+    private Vector3 objectPos;
+    private float distance;
 
-    public bool canPick = true; 
-    public GameObject item; 
-    public GameObject tempParent; // the player module
-    public bool pickedup = false; 
+    public float ThrowForce = 600f;
+    public bool CanPick = true; 
+    public GameObject Item; 
+    public GameObject TempParent; // the player module
+    public bool Pickedup = false; 
     public Rigidbody Rigidbody1;
 
     void Update()
     {
-        Distance = Vector3.Distance(item.transform.position, tempParent.transform.position); 
+        distance = Vector3.Distance(Item.transform.position, TempParent.transform.position); 
         Pickup();
-        if (Distance >= 30f) // if the player is farther then 30 unit away the item can not be pickedup
+        if (distance >= 30f) // if the player is farther then 30 unit away the item can not be pickedup
         {
-            pickedup = false;
+            Pickedup = false;
         }
 
-        if (pickedup == true) // if the item is picked then set the object position based on player pos and movement
+        if (Pickedup == true) // if the item is picked then set the object position based on player pos and movement
         {
             Rigidbody1.velocity = Vector3.zero;
             Rigidbody1.angularVelocity = Vector3.zero;
-            item.transform.SetParent(tempParent.transform);
+            Item.transform.SetParent(TempParent.transform);
 
             if (Input.GetKeyUp(KeyCode.E))
             {
-                Rigidbody1.AddForce(tempParent.transform.forward * ThrowForce);
-                pickedup = false;
+                Rigidbody1.AddForce(TempParent.transform.forward * ThrowForce);
+                Pickedup = false;
             }
         }
         else 
         {
-            objectPos = item.transform.position;
-            item.transform.SetParent(null);
+            objectPos = Item.transform.position;
+            Item.transform.SetParent(null);
             Rigidbody1.useGravity = true;
-            item.transform.position = objectPos;
+            Item.transform.position = objectPos;
         }
 
     }
@@ -55,9 +55,9 @@ public class ThrowableObjects : InteractableObjects
     {
         if (Input.GetKey(KeyCode.E))
         {
-            if (Distance <= 30f)
+            if (distance <= 30f)
             {
-                pickedup = true;
+                Pickedup = true;
                 Rigidbody1.useGravity = false;
                 //Rigidbody.detectcollisions = true;
             }
