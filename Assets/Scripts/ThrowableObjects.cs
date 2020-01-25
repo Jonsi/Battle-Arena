@@ -10,8 +10,8 @@ public class ThrowableObjects : InteractableObjects
     // speed parameter of moving changed by player stats V
     // needs to have a direction of throw V
 
-    private Vector3 objectPos;
-    private float distance;
+    private Vector3 _objectPos;
+    private float _distance;
 
     public float ThrowForce = 600f;
     public bool CanPick = true; 
@@ -22,9 +22,9 @@ public class ThrowableObjects : InteractableObjects
 
     void Update()
     {
-        distance = Vector3.Distance(Item.transform.position, TempParent.transform.position); 
+        _distance = Vector3.Distance(Item.transform.position, TempParent.transform.position); 
         Pickup();
-        if (distance >= 30f) // if the player is farther then 30 unit away the item can not be pickedup
+        if (_distance >= 30f) // if the player is farther then 30 unit away the item can not be pickedup
         {
             Pickedup = false;
         }
@@ -43,10 +43,10 @@ public class ThrowableObjects : InteractableObjects
         }
         else 
         {
-            objectPos = Item.transform.position;
+            _objectPos = Item.transform.position;
             Item.transform.SetParent(null);
             Rigidbody1.useGravity = true;
-            Item.transform.position = objectPos;
+            Item.transform.position = _objectPos;
         }
 
     }
@@ -55,7 +55,7 @@ public class ThrowableObjects : InteractableObjects
     {
         if (Input.GetKey(KeyCode.E))
         {
-            if (distance <= 30f)
+            if (_distance <= 30f)
             {
                 Pickedup = true;
                 Rigidbody1.useGravity = false;
