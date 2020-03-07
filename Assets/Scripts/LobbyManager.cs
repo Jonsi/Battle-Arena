@@ -60,13 +60,13 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.CreateRoom(roomName,roomOptions);
     }
 
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        Debug.Log("Failed Creating Room");
+    }
+
     public override void OnCreatedRoom()
     {
         Debug.Log("Room Created");
-    }
-
-    public override void OnJoinedRoom()
-    {
-        Debug.Log("Joined room");
     }
 }
