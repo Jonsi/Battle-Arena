@@ -650,7 +650,63 @@ PrefabInstance:
     - target: {fileID: 8082285531476185801, guid: 02db26c7240a80d48889b8dc398df637,
         type: 3}
       propertyPath: m_Name
-      value: Player
+      value: PhotonPlayer
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02db26c7240a80d48889b8dc398df637, type: 3}
+--- !u!1 &8082285530605613976 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8082285530494136635, guid: 02db26c7240a80d48889b8dc398df637,
+    type: 3}
+  m_PrefabInstance: {fileID: 8082285530605613975}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8082285530605613977 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8082285531476185801, guid: 02db26c7240a80d48889b8dc398df637,
+    type: 3}
+  m_PrefabInstance: {fileID: 8082285530605613975}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8082285530605613978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8082285530605613976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 0
+  OwnershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  viewIdField: 2
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &8082285530605613979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8082285530605613977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 0
+  OwnershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  viewIdField: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0

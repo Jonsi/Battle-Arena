@@ -65,8 +65,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         Debug.Log("Failed Creating Room");
     }
 
-    public override void OnCreatedRoom()
+    public override void OnJoinedRoom()
     {
-        Debug.Log("Room Created");
+        base.OnJoinedRoom();
+        SceneManagerPUN.Singleton.LoadNewScene(SceneName.RoomScene);
     }
 }

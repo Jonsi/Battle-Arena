@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon.Realtime;
-using Photon.Pun;
+using Photon.;
 
 public enum SceneName
 {
@@ -59,5 +59,6 @@ public class SceneManagerPUN : MonoBehaviour
     public void OnSceneFinishedLoading(Scene scene, LoadSceneMode loadSceneMode)
     {
         currentScene = scene.buildIndex;
+        SceneManager.LoadScene(scene.buildIndex);
     }
 }

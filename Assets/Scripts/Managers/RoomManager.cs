@@ -15,6 +15,8 @@ public class RoomManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
     public Button StartGameButton; //Temporary => create automatic delay to start game when MinimumStartCount (number of player)  are int the room
     public PhotonView PV;
 
+    private int PlayersCount;
+
     public int StartTimeDelay = 5;
 
     private void Awake()
@@ -50,6 +52,7 @@ public class RoomManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
     public override void OnJoinedRoom()
     {
+        PlayersCount++;
         base.OnJoinedRoom();
         Debug.Log("Joined Room");
     }
