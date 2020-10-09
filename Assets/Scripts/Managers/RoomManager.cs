@@ -31,7 +31,14 @@ public class RoomManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        
+        if(PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log("Connected to room as master");
+        }
+        else
+        {
+            Debug.Log("Connected as player");
+        }
     }
 
     // Update is called once per frame

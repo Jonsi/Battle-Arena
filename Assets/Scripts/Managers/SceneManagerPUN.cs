@@ -17,6 +17,7 @@ public class SceneManagerPUN : MonoBehaviour
     public static SceneManagerPUN Singleton;
 
     private int currentScene;
+    private int loadedScene;
 
     private void Awake()
     {
@@ -58,7 +59,6 @@ public class SceneManagerPUN : MonoBehaviour
 
     public void OnSceneFinishedLoading(Scene scene, LoadSceneMode loadSceneMode)
     {
-        currentScene = scene.buildIndex;
-        SceneManager.LoadScene(scene.buildIndex);
+        loadedScene = scene.buildIndex;
     }
 }
