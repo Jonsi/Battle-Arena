@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon.Realtime;
-using Photon.;
+using Photon.Pun;
 
 public enum SceneName
 {
