@@ -68,6 +68,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
-        SceneManagerPUN.Singleton.LoadNewScene(SceneName.RoomScene);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            SceneManagerPUN.Singleton.LoadNewScene(SceneName.RoomScene);
+        }
     }
 }
