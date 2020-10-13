@@ -28,7 +28,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public override void OnConnectedToMaster()

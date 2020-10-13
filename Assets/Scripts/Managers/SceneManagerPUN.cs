@@ -49,7 +49,7 @@ public class SceneManagerPUN : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        BackButtonPressed();
     }
 
     public void LoadNewScene(SceneName sceneName)
@@ -60,5 +60,21 @@ public class SceneManagerPUN : MonoBehaviour
     public void OnSceneFinishedLoading(Scene scene, LoadSceneMode loadSceneMode)
     {
         loadedScene = scene.buildIndex;
+    }
+
+    //On SceneManager for the need in differen Scenes
+    public void BackButtonPressed()
+    {
+        // Make sure user is on Android platform
+        if (Application.platform == RuntimePlatform.Android)
+        {
+
+            // Check if Back was pressed this frame
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Debug.Log("Exit?");
+                //Switch case for different scenes
+            }
+        }
     }
 }
