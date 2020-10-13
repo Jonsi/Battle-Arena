@@ -13,6 +13,7 @@ public class ThrowableObjects : InteractableObjects
     private Vector3 _objectPos;
     private float _distance;
 
+    public float minPickDistance = 30f;
     public float ThrowForce = 600f;
     public bool CanPick = true; 
     public GameObject Item; 
@@ -24,7 +25,7 @@ public class ThrowableObjects : InteractableObjects
     {
         _distance = Vector3.Distance(Item.transform.position, TempParent.transform.position); 
         Pickup();
-        if (_distance >= 30f) // if the player is farther then 30 unit away the item can not be pickedup
+        if (_distance >= minPickDistance) // if the player is farther then 30 unit away the item can not be pickedup
         {
             Pickedup = false;
         }
@@ -34,8 +35,9 @@ public class ThrowableObjects : InteractableObjects
             Rigidbody1.velocity = Vector3.zero;
             Rigidbody1.angularVelocity = Vector3.zero;
             Item.transform.SetParent(TempParent.transform);
+            Item.transform.position = TempParent.transform.position;
 
-            if (Input.GetKeyUp(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E))
             {
                 Rigidbody1.AddForce(TempParent.transform.forward * ThrowForce);
                 Pickedup = false;
@@ -53,17 +55,11 @@ public class ThrowableObjects : InteractableObjects
 
     void Pickup()  
     {
-        if (Input.GetKey(KeyCode.E))
+        if (_distance <= minPickDistance)
         {
-            if (_distance <= 30f)
-            {
-                Pickedup = true;
-                Rigidbody1.useGravity = false;
-                //Rigidbody.detectcollisions = true;
-            }
-
-
+            Pickedup = true;
+            Rigidbody1.useGravity = false;
+            //Rigidbody.detectcollisions = true;
         }
     }
-
 }
