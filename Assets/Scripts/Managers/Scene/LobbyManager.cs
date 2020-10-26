@@ -8,12 +8,13 @@ using Photon.Realtime;
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
     public static LobbyManager Singleton;
-
     public Button JoinGameButton;
+    public Text LobbyName;
+    public List<Text> RoomsList;
 
     public byte maxRoomPlayers = 4;
     public int maxRoomsNumber = 4;
-
+    
     private void Awake()
     {
         Singleton = this;
@@ -22,6 +23,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        AuthenticationValues values = new AuthenticationValues();
+        values.UserId = "Jonsi" + Random.Range(0f, 1f);
+        PhotonNetwork.AuthValues = values;
         PhotonNetwork.ConnectUsingSettings();
     }
 
@@ -31,11 +35,15 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     }
 
+    
+
     public override void OnConnectedToMaster()
     {
         base.OnConnectedToMaster();
-        Debug.Log("Connected To Master");
+        Debug.Log("Connected To Master. ID: ");
         PhotonNetwork.AutomaticallySyncScene = true;
+        PhotonNetwork.JoinLobby();
+
     }
 
     public void OnJoinButtonClicked()
@@ -45,7 +53,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        Debug.Log("Failed Joining Room");
+        Debug.Log("Failed Joining Room : \n" + message);
         CreateRoom();
     }
 
@@ -55,7 +63,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         roomOptions.IsOpen = true;
         roomOptions.IsVisible = true;
         roomOptions.MaxPlayers = maxRoomPlayers;
-
+        roomOptions.PublishUserId = true;
+        
         var roomName = "Room" + Random.Range(0f, maxRoomsNumber);
         PhotonNetwork.CreateRoom(roomName,roomOptions);
     }
@@ -71,6 +80,24 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             SceneManagerPUN.Singleton.LoadNewScene(SceneName.RoomScene);
+        }
+    }
+
+    public override void OnJoinedLobby()
+    {
+        LobbyName.text = PhotonNetwork.CurrentLobby.ToString() +"\n Region: " + 
+                         PhotonNetwork.CloudRegion + "\n Ver: " + 
+                         PhotonNetwork.GameVersion ;
+        
+        
+    }
+
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+            
+         foreach(RoomInfo room in roomList)
+        {
+            RoomsList[roomList.IndexOf(room)].text = room.Name;
         }
     }
 }

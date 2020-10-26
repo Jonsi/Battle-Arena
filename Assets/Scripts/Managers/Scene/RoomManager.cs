@@ -12,26 +12,24 @@ public class RoomManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
     public int MinimumStartCount;//Minimu players in the room for strting game automatically(with delay)
     public Button LeaveRoom;
-    public Button StartGameButton; //Temporary => create automatic delay to start game when MinimumStartCount (number of player)  are int the room
+    public Button StartGameButton;
+    public List<Text> RoomSlots;
+    public Text RoomName;
     public PhotonView PV;
-
-    private int PlayersCount;
 
     public int StartTimeDelay = 5;
 
     private void Awake()
     {
         Singleton = this;
-    }
-
-    private void OnEnable()
-    {
         
     }
+
+
     // Start is called before the first frame update
     void Start()
     {
-        if(PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
         {
             Debug.Log("Connected to room as master");
         }
@@ -39,12 +37,19 @@ public class RoomManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         {
             Debug.Log("Connected as player");
         }
+
+        RoomName.text = RoomName.text + PhotonNetwork.CurrentRoom.Name + "\n Open: " +
+                                        PhotonNetwork.CurrentRoom.IsOpen + "\n Visible: " +
+                                        PhotonNetwork.CurrentRoom.IsVisible + "\n max Players" +
+                                        PhotonNetwork.CurrentRoom.MaxPlayers;
+        PhotonNetwork.CurrentRoom.AddPlayer(PhotonNetwork.LocalPlayer);
+        AddPlayerToSlot();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void StartGame()
@@ -57,10 +62,11 @@ public class RoomManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         SceneManagerPUN.Singleton.LoadNewScene(SceneName.ArenaScene);
     }
 
-    public override void OnJoinedRoom()
+    public void AddPlayerToSlot()
     {
-        PlayersCount++;
-        base.OnJoinedRoom();
-        Debug.Log("Joined Room");
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            RoomSlots[player.ActorNumber].text = player.UserId;
+        }
     }
 }
