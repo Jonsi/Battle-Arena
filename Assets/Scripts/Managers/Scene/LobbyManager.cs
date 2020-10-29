@@ -8,9 +8,6 @@ using Photon.Realtime;
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
     public static LobbyManager Singleton;
-    public Button JoinGameButton;
-    public Text LobbyName;
-    public List<Text> RoomsList;
 
     public byte maxRoomPlayers = 4;
     public int maxRoomsNumber = 4;
@@ -23,10 +20,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        AuthenticationValues values = new AuthenticationValues();
-        values.UserId = "Jonsi" + Random.Range(0f, 1f);
-        PhotonNetwork.AuthValues = values;
-        PhotonNetwork.ConnectUsingSettings();
+        //PhotonNetwork.ConnectUsingSettings();
     }
 
     // Update is called once per frame
@@ -35,20 +29,19 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     }
 
-    
-
     public override void OnConnectedToMaster()
     {
-        base.OnConnectedToMaster();
-        Debug.Log("Connected To Master. ID: ");
-        PhotonNetwork.AutomaticallySyncScene = true;
+        Debug.Log("Connected To Master");
         PhotonNetwork.JoinLobby();
-
     }
 
-    public void OnJoinButtonClicked()
+    public override void OnJoinedLobby()
     {
-        PhotonNetwork.JoinRandomRoom();
+        string info = PhotonNetwork.CurrentLobby.ToString() + "\n Region: " +
+                         PhotonNetwork.CloudRegion + "\n Ver: " +
+                         PhotonNetwork.GameVersion;
+
+        UiManagerLobby.Singleton.SetLobbyInfo(info);
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
@@ -64,6 +57,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         roomOptions.IsVisible = true;
         roomOptions.MaxPlayers = maxRoomPlayers;
         roomOptions.PublishUserId = true;
+        roomOptions.PlayerTtl = 0;
         
         var roomName = "Room" + Random.Range(0f, maxRoomsNumber);
         PhotonNetwork.CreateRoom(roomName,roomOptions);
@@ -76,28 +70,28 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        base.OnJoinedRoom();
+        PhotonNetwork.AutomaticallySyncScene = true;
+
         if (PhotonNetwork.IsMasterClient)
         {
             SceneManagerPUN.Singleton.LoadNewScene(SceneName.RoomScene);
         }
     }
 
-    public override void OnJoinedLobby()
-    {
-        LobbyName.text = PhotonNetwork.CurrentLobby.ToString() +"\n Region: " + 
-                         PhotonNetwork.CloudRegion + "\n Ver: " + 
-                         PhotonNetwork.GameVersion ;
-        
-        
-    }
-
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-            
-         foreach(RoomInfo room in roomList)
+        UiManagerLobby.Singleton.SetRoomList(roomList);
+    }
+
+    public void ConnectUsingInfo(PlayerInfo info)
+    {
+        if (PhotonNetwork.IsConnected)
         {
-            RoomsList[roomList.IndexOf(room)].text = room.Name;
+            return;
         }
+
+        AuthenticationValues values = new AuthenticationValues();
+        values.UserId = info.UserId;
+        PhotonNetwork.ConnectUsingSettings();
     }
 }

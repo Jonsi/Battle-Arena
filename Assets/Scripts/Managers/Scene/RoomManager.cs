@@ -6,44 +6,22 @@ using UnityEngine.SceneManagement;
 using Photon.Realtime;
 using Photon.Pun;
 
-public class RoomManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
+public class RoomManager : MonoBehaviourPunCallbacks
 {
     public static RoomManager Singleton;
 
-    public int MinimumStartCount;//Minimu players in the room for strting game automatically(with delay)
-    public Button LeaveRoom;
-    public Button StartGameButton;
-    public List<Text> RoomSlots;
-    public Text RoomName;
-    public PhotonView PV;
-
-    public int StartTimeDelay = 5;
+    public GameObject PhotonPlayerPrefab;
 
     private void Awake()
     {
         Singleton = this;
-        
-    }
 
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            Debug.Log("Connected to room as master");
-        }
-        else
-        {
-            Debug.Log("Connected as player");
-        }
-
-        RoomName.text = RoomName.text + PhotonNetwork.CurrentRoom.Name + "\n Open: " +
-                                        PhotonNetwork.CurrentRoom.IsOpen + "\n Visible: " +
-                                        PhotonNetwork.CurrentRoom.IsVisible + "\n max Players" +
-                                        PhotonNetwork.CurrentRoom.MaxPlayers;
-        PhotonNetwork.CurrentRoom.AddPlayer(PhotonNetwork.LocalPlayer);
-        AddPlayerToSlot();
+        UiManagerRoom.Singleton.SetRoomInfo(PhotonNetwork.IsMasterClient, PhotonNetwork.CurrentRoom);
     }
 
     // Update is called once per frame
@@ -62,11 +40,26 @@ public class RoomManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         SceneManagerPUN.Singleton.LoadNewScene(SceneName.ArenaScene);
     }
 
-    public void AddPlayerToSlot()
+
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        foreach (Player player in PhotonNetwork.PlayerList)
-        {
-            RoomSlots[player.ActorNumber].text = player.UserId;
-        }
+        UiManagerRoom.Singleton.SetPlayerSlot(newPlayer);
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        UiManagerRoom.Singleton.RemovePlayerSlot(otherPlayer);
+    }
+
+    public override void OnJoinedRoom()
+    {
+        //PhotonNetwork.CurrentRoom.AddPlayer(PhotonNetwork.LocalPlayer);
+    }
+
+    public void LeaveRoom()
+    {
+        PhotonNetwork.LeaveRoom();
+        SceneManagerPUN.Singleton.LoadNewScene(SceneName.LobbyScene);
     }
 }
