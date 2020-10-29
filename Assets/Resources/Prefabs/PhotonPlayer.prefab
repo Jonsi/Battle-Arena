@@ -99,6 +99,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46b3d121afc0d214bbd0f3c76aa9a591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AvatarPrefab: {fileID: 6180014590685240070, guid: 40cc6b8ef0809bb4a88e3ef2fb12f93d,
+    type: 3}
+  PV: {fileID: 8082285530605613979}
 --- !u!114 &8082285530605613979
 MonoBehaviour:
   m_ObjectHideFlags: 0

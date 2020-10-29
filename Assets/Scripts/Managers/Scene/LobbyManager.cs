@@ -9,11 +9,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 {
     public static LobbyManager Singleton;
 
-    public Button JoinGameButton;
-
     public byte maxRoomPlayers = 4;
     public int maxRoomsNumber = 4;
-
+    
     private void Awake()
     {
         Singleton = this;
@@ -22,7 +20,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        PhotonNetwork.ConnectUsingSettings();
+        //PhotonNetwork.ConnectUsingSettings();
     }
 
     // Update is called once per frame
@@ -33,19 +31,22 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        base.OnConnectedToMaster();
         Debug.Log("Connected To Master");
-        PhotonNetwork.AutomaticallySyncScene = true;
+        PhotonNetwork.JoinLobby();
     }
 
-    public void OnJoinButtonClicked()
+    public override void OnJoinedLobby()
     {
-        PhotonNetwork.JoinRandomRoom();
+        string info = PhotonNetwork.CurrentLobby.ToString() + "\n Region: " +
+                         PhotonNetwork.CloudRegion + "\n Ver: " +
+                         PhotonNetwork.GameVersion;
+
+        UiManagerLobby.Singleton.SetLobbyInfo(info);
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        Debug.Log("Failed Joining Room");
+        Debug.Log("Failed Joining Room : \n" + message);
         CreateRoom();
     }
 
@@ -55,7 +56,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         roomOptions.IsOpen = true;
         roomOptions.IsVisible = true;
         roomOptions.MaxPlayers = maxRoomPlayers;
-
+        roomOptions.PublishUserId = true;
+        roomOptions.PlayerTtl = 0;
+        
         var roomName = "Room" + Random.Range(0f, maxRoomsNumber);
         PhotonNetwork.CreateRoom(roomName,roomOptions);
     }
@@ -67,10 +70,28 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        base.OnJoinedRoom();
+        PhotonNetwork.AutomaticallySyncScene = true;
+
         if (PhotonNetwork.IsMasterClient)
         {
             SceneManagerPUN.Singleton.LoadNewScene(SceneName.RoomScene);
         }
+    }
+
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        UiManagerLobby.Singleton.SetRoomList(roomList);
+    }
+
+    public void ConnectUsingInfo(PlayerInfo info)
+    {
+        if (PhotonNetwork.IsConnected)
+        {
+            return;
+        }
+
+        AuthenticationValues values = new AuthenticationValues();
+        values.UserId = info.UserId;
+        PhotonNetwork.ConnectUsingSettings();
     }
 }
