@@ -16,14 +16,18 @@ MonoBehaviour:
     AppIdRealtime: b2b85eca-7b1f-48f7-b9de-096b2917a433
     AppIdChat: 
     AppIdVoice: 
-    AppVersion: 1.0.0
+    AppVersion: 
     UseNameServer: 1
     FixedRegion: 
     Server: 
     Port: 0
+    ProxyServer: 
     Protocol: 0
+    EnableProtocolFallback: 1
+    AuthMode: 0
     EnableLobbyStatistics: 0
     NetworkLogging: 1
+  DevRegion: 
   PunLogging: 0
   EnableSupportLogger: 0
   RunInBackground: 1
@@ -35,4 +39,5 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   DisableAutoOpenWizard: 1
-  ShowSettings: 1
+  ShowSettings: 0
+  DevRegionSetOnce: 1

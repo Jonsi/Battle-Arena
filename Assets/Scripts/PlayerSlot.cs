@@ -25,8 +25,8 @@ public class PlayerSlot : MonoBehaviour
 
     public void SetPlayerToSlot(Player player)
     {
-        NicknameText.text += player.NickName;
-        ActorNumberText.text += player.ActorNumber;
+        NicknameText.text = "Nick: " + player.NickName;
+        ActorNumberText.text = "Number: " + player.ActorNumber;
     }
 
     public void RemovePlayerFromSlot()

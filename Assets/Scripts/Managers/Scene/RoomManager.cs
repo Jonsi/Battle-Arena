@@ -9,8 +9,9 @@ using Photon.Pun;
 public class RoomManager : MonoBehaviourPunCallbacks
 {
     public static RoomManager Singleton;
-
     public GameObject PhotonPlayerPrefab;
+
+    private List<Player> _roomPlayers = new List<Player>(); 
 
     private void Awake()
     {
@@ -18,9 +19,19 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     }
 
+    public override void OnEnable()
+    {
+        base.OnEnable();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            _roomPlayers.Add(player);
+            UiManagerRoom.Singleton.SetPlayerSlot(player);
+        }
         UiManagerRoom.Singleton.SetRoomInfo(PhotonNetwork.IsMasterClient, PhotonNetwork.CurrentRoom);
     }
 
@@ -50,11 +61,6 @@ public class RoomManager : MonoBehaviourPunCallbacks
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         UiManagerRoom.Singleton.RemovePlayerSlot(otherPlayer);
-    }
-
-    public override void OnJoinedRoom()
-    {
-        //PhotonNetwork.CurrentRoom.AddPlayer(PhotonNetwork.LocalPlayer);
     }
 
     public void LeaveRoom()
