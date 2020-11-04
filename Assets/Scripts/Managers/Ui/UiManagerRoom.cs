@@ -16,10 +16,15 @@ public class UiManagerRoom : MonoBehaviour
     {
         Singleton = this;
     }
+
+    private void OnEnable()
+    {
+        ClearAllPlayerSlots();
+    }
     // Start is called before the first frame update
     void Start()
     {
-        //ClearAllPlayerSlots();
+        
     }
 
     // Update is called once per frame

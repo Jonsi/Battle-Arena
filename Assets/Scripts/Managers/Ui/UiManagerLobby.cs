@@ -61,6 +61,6 @@ public class UiManagerLobby : MonoBehaviour
 
     public void OnJoinButtonClicked()
     {
-        PhotonNetwork.JoinRandomRoom();
+        LobbyManager.Singleton.JoinRoom();
     }
 }

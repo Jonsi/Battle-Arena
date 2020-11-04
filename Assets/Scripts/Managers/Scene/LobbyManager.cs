@@ -94,4 +94,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         values.UserId = info.UserId;
         PhotonNetwork.ConnectUsingSettings();
     }
+
+    public void JoinRoom()
+    {
+        PhotonNetwork.JoinRandomRoom();
+    }
 }
